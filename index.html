@@ -1,0 +1,102 @@
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>DeskBuddy</title>
+	<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+	<div class="main-container">
+		<h1>🐾 DeskBuddy</h1>
+
+		<!-- DeskBuddy Image (replaces emoji) -->
+		<img id="pet" src="assets/egg.png" alt="DeskBuddy" />
+
+		<div id="flavor">Tap a button when something happens today...</div>
+
+		<button class="button" id="productiveBtn" onclick="interact('productive')">✅ That Was Productive</button>
+		<button class="button" id="survivedBtn" onclick="interact('survived')">💀 That Was Tough</button>
+		<button class="button" id="bulkBtn" onclick="startBulk()">📦 Bulk</button>
+		<div id="bulkTimerDisplay"></div>
+		<button class="button" id="breakBtn" onclick="toggleBreak()">☕ Break Time</button>
+
+		<div id="gearIcon" onclick="toggleStats()">⚙️</div>
+	</div>
+
+	<div id="popupOverlay" class="popup-overlay"></div>
+
+	<!-- Stats Panel -->
+	<div class="stats-panel" id="statsPanel">
+		<h2>📊 DeskBuddy Stats</h2>
+		<div class="stat"><strong>Buddy:</strong> <span id="statBuddyIcon"><img src="assets/egg.png" alt="Buddy" style="height: 1.5rem;" /></span></div>
+		<div class="stat"><strong>Level:</strong> <span id="statLevel">1</span></div>
+		<div class="stat"><strong>Levels Gained:</strong> <span id="statGained">0</span></div>
+		<div class="stat"><strong>Levels Lost:</strong> <span id="statLost">0</span></div>
+		<div class="stat"><strong>Productive Presses:</strong> <span id="statProd">0</span></div>
+		<div class="stat"><strong>Survived Presses:</strong> <span id="statSurv">0</span></div>
+		<div class="stat"><strong>Bulk Presses:</strong> <span id="statBulk">0</span></div>
+		<div class="stat"><strong>Break Presses:</strong> <span id="statBreak">0</span></div>
+		<div class="stat"><strong>Cooldown:</strong> <span id="statCooldown">None</span></div>
+
+		<button onclick="openSaveRestore()" style="margin-top: 2rem;">💾 Save and Restore</button>
+		<button style="background: var(--red); color: white;" onclick="showResetPopup()">🗑️ Reset Buddy</button>
+		<button onclick="toggleStats()" style="background: var(--blue); margin-top: 2rem;">Close Stats</button>
+	</div>
+
+	<!-- Save & Restore Popup -->
+	<div id="savePopup" class="modal hidden">
+		<div class="modal-content">
+			<h3>💾 Save & Restore</h3>
+			<button onclick="showSaveCode()">Generate Paste Code</button>
+			<div id="saveCodeOutput"></div>
+			<button class="copy-btn" id="copyCodeBtn" onclick="copySaveCode()">Copy</button>
+			<hr />
+			<input id="loadInput" placeholder="Paste your save code here..." />
+			<button onclick="confirmLoadCode()">Confirm</button>
+			<div class="modal-actions" style="margin-top: 1rem;">
+				<button onclick="closeSaveRestore()" class="blue-btn">Close</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- MODALS -->
+	<div id="resetPopup" class="modal hidden">
+		<div class="modal-content">
+			<h3>Confirm Reset</h3>
+			<input id="resetInput" placeholder="Type 'reset'" />
+			<div class="modal-actions">
+				<button onclick="hideResetPopup()" class="blue-btn">Close</button>
+				<button onclick="confirmReset()" class="red-btn">Confirm Reset</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="bulkConfirmPopup" class="modal hidden">
+		<div class="modal-content">
+			<h3>Minimum Bulk Time Not Met</h3>
+			<p>You've spent too little time for a bulk request.<br />
+			Click <strong>End</strong> to exit bulk mode without receiving points, or <strong>Cancel</strong> to remain in bulk mode.</p>
+			<p><strong>Time Remaining:</strong> <span id="bulkTimeRemaining"></span></p>
+			<div class="modal-actions">
+				<button onclick="cancelBulkExit()" class="blue-btn">Cancel</button>
+				<button onclick="confirmBulkExit()" class="red-btn">End</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="breakConfirmPopup" class="modal hidden">
+		<div class="modal-content">
+			<h3>Break Too Short</h3>
+			<p>Your break wasn't long enough.<br />
+			If you leave break mode now, no cooldowns will be reset.</p>
+			<p id="breakTimeRemaining">⏳ Time Left for Reset: 10:00</p>
+			<div class="modal-actions">
+				<button onclick="cancelBreakExit()" class="blue-btn">Cancel</button>
+				<button onclick="confirmBreakExit()" class="red-btn">Leave Anyway</button>
+			</div>
+		</div>
+	</div>
+
+	<script src="script.js"></script>
+</body>
+</html>
